@@ -24,11 +24,6 @@ vim.g.maplocalleader = "\\"
 -- 行番号の表示
 vim.opt.number = true
 
--- set space tab
-vim.opt.expandtab = true
-vim.o.tabstop = 2
-vim.o.shiftwidth = 2
-
 -- nnoremap <silent> tt <cmd>terminal<CR>に相当。
 -- 新規タブでターミナルモードを起動
 -- vim.keymap.set('n', 'tt', '<cmd>terminal<CR>', {silent = true})
@@ -39,6 +34,11 @@ vim.keymap.set("n", "tx", "<cmd>belowright new<CR><cmd>terminal<CR>", { silent =
 -- tnoremap <ESC> <c-\><c-n>に相当。
 -- ターミナルモードでESCでノーマルモードに戻る
 vim.keymap.set("t", "<ESC>", "<c-\\><c-n>", { silent = true })
+
+-- Telescopeの設定
+vim.keymap.set("n", "sf", '<cmd>lua require("telescope.builtin").find_files()<cr>', { noremap = true })
+vim.keymap.set("n", "sb", '<cmd>lua require("telescope.builtin").buffers()<cr>', { noremap = true })
+vim.keymap.set("n", "sh", '<cmd>lua require("telescope.builtin").help_tags()<cr>', { noremap = true })
 
 -- jjでインサートモードからノーマルモードに変更
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
@@ -53,6 +53,8 @@ vim.keymap.set("i", "vv", function()
 	local output = vim.fn.system("paste_image_on_vim_markdown")
 	vim.fn.setline(".", vim.trim(output))
 end, { noremap = true, silent = true, desc = "Insert image from clipboard (Markdown)" })
+
+vim.opt.termguicolors = true
 
 -- システムクリップボードを使用
 vim.opt.clipboard:append({ "unnamedplus" })
@@ -74,6 +76,42 @@ vim.api.nvim_create_autocmd("TermOpen", {
 	end,
 })
 
+-- 保存時に view を保存
+-- こうすることで、vimを終了しても折りたたみやカーソル位置が保存される
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern = "*",
+	callback = function()
+		if vim.fn.expand("%") ~= "" and not vim.bo.buftype:match("nofile") then
+			vim.cmd("mkview")
+		end
+	end,
+})
+
+-- 読み込み時に view を読み込む
+-- こうすることで、vimを起動するたびに折りたたみやカーソル位置が復元される
+vim.api.nvim_create_autocmd("BufRead", {
+	pattern = "*",
+	callback = function()
+		if vim.fn.expand("%") ~= "" and not vim.bo.buftype:match("nofile") then
+			vim.cmd("silent! loadview")
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "*",
+	callback = function()
+		vim.opt_local.tabstop = 2
+		vim.opt_local.shiftwidth = 2
+		vim.opt_local.softtabstop = 2
+		vim.opt_local.expandtab = true
+	end,
+})
+vim.g.mapleader = "\\"
+
+-- view にオプションを保存しない
+vim.opt.viewoptions:remove("options")
+
 -- Setup lazy.nvim
 require("lazy").setup({
 	spec = {
@@ -81,3 +119,9 @@ require("lazy").setup({
 		{ import = "plugins" },
 	},
 })
+
+-- set space tab
+-- vim.opt.expandtab = true
+-- vim.o.tabstop = 2
+-- vim.o.shiftwidth = 2
+-- vim.o.softtabstop = 2
