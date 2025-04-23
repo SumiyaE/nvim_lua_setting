@@ -1,6 +1,5 @@
 return {
 	"nvim-tree/nvim-tree.lua",
-	dependencies = { "nvim-tree/nvim-web-devcons" }, -- アイコン用
 	config = function()
 		require("nvim-tree").setup({
 			sort_by = "case_sensitive",
