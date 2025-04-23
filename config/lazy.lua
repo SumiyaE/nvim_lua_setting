@@ -19,10 +19,13 @@ vim.opt.rtp:prepend(lazypath)
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
 
 -- 行番号の表示
 vim.opt.number = true
+
+-- nvim-treeを使用するため、netrwを無効化
+vim.api.nvim_set_var("loaded_netrw", 1)
+vim.api.nvim_set_var("loaded_netrwPlugin", 1)
 
 -- nnoremap <silent> tt <cmd>terminal<CR>に相当。
 -- 新規タブでターミナルモードを起動
@@ -34,6 +37,10 @@ vim.keymap.set("n", "tx", "<cmd>belowright new<CR><cmd>terminal<CR>", { silent =
 -- tnoremap <ESC> <c-\><c-n>に相当。
 -- ターミナルモードでESCでノーマルモードに戻る
 vim.keymap.set("t", "<ESC>", "<c-\\><c-n>", { silent = true })
+
+-- bufferを切り替えるためのキーマッピング
+vim.keymap.set("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true }) -- 次のバッファ
+vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { noremap = true, silent = true }) -- 前のバッファ
 
 -- Telescopeの設定
 vim.keymap.set("n", "sf", '<cmd>lua require("telescope.builtin").find_files()<cr>', { noremap = true })
@@ -107,7 +114,6 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.expandtab = true
 	end,
 })
-vim.g.mapleader = "\\"
 
 -- view にオプションを保存しない
 vim.opt.viewoptions:remove("options")
