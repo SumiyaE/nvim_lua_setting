@@ -36,7 +36,7 @@ vim.keymap.set("n", "tx", "<cmd>belowright new<CR><cmd>terminal<CR>", { silent =
 
 -- tnoremap <ESC> <c-\><c-n>に相当。
 -- ターミナルモードでESCでノーマルモードに戻る
-vim.keymap.set("t", "<ESC>", "<c-\\><c-n>", { silent = true })
+-- vim.keymap.set("t", "<ESC>", "<c-\\><c-n>", { silent = true })
 
 -- bufferを切り替えるためのキーマッピング
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true }) -- 次のバッファ
