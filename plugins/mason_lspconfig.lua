@@ -20,7 +20,9 @@ return {
 			-- LSPサーバーを自動で lspconfig に渡す
 			require("mason-lspconfig").setup_handlers({
 				function(server_name)
-					local opts = {}
+					local opts = {
+						capabilities = require("cmp_nvim_lsp").default_capabilities(),
+					}
 
 					-- .luaを起動した際に、"vim"のグローバル変数に対する警告を無視する。
 					if server_name == "lua_ls" then
