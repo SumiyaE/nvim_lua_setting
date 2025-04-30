@@ -1,13 +1,16 @@
 return {
 	"zbirenbaum/copilot.lua",
-	cmd = "Copilot",
-	event = "InsertEnter",
-	config = function()
-		require("copilot").setup({
-			filetypes = {
-				markdown = true, -- ← 補完を有効にする
-				help = false, -- ← 無効にしたい例
+	cmd = "Copilot", -- :Copilotコマンドが実行されたときにプラグインを読み込む
+	event = "BufReadPost", -- ファイルが読み込まれた後にプラグインをロード. https://vim-jp.org/vimdoc-ja/autocmd.html
+	opts = {
+		suggestion = {
+			auto_trigger = true,
+			keymap = {
+				accept = "<Tab>", -- Tab で提案を受け入れる
 			},
-		})
-	end,
+		},
+		filetypes = {
+			markdown = true,
+		},
+	},
 }
