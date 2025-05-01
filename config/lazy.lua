@@ -43,12 +43,12 @@ vim.keymap.set("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true }) --
 vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { noremap = true, silent = true }) -- 前のバッファ
 vim.keymap.set("n", "<C-x>", ":bd<CR>", { noremap = true, silent = true }) -- バッファを閉じる
 
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
-	callback = function()
-		vim.opt_local.conceallevel = 2
-	end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = "markdown",
+-- 	callback = function()
+-- 		vim.opt_local.conceallevel = 1
+-- 	end,
+-- })
 
 -- Telescopeの設定
 vim.keymap.set("n", "sf", '<cmd>lua require("telescope.builtin").find_files()<cr>', { noremap = true })
