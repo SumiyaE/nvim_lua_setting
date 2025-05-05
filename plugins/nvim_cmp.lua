@@ -1,59 +1,67 @@
-local M = {
+return {
 	"hrsh7th/nvim-cmp",
+	event = "InsertEnter",
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-nvim-lua",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
+		"hrsh7th/cmp-nvim-lsp", -- LSP補完
+		"hrsh7th/cmp-buffer", -- 現在のバッファ内の単語補完
+		"hrsh7th/cmp-path", -- ファイルパス補完
 		"hrsh7th/cmp-cmdline",
-		"onsails/lspkind.nvim", -- ★これを追加！
+		"onsails/lspkind.nvim", -- 補完候補にアイコンを表示
 	},
-	event = { "InsertEnter", "CmdlineEnter" },
-}
-
-M.config = function()
-	local cmp = require("cmp")
-	local lspkind = require("lspkind")
-	vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
-	cmp.setup({
-		formatting = {
+	config = function()
+		local cmp = require("cmp")
+		local lspkind = require("lspkind")
+		vim.opt.completeopt = { "menu", "menuone", "noinsert" }
+		-- 補完候補のフォーマット設定（アイコン付き）
+		local formatting = {
 			format = lspkind.cmp_format({
-				mode = "symbol",
+				mode = "symbol", -- "symbol_text" にすると文字＋アイコン
 				maxwidth = 50,
 				ellipsis_char = "...",
-				before = function(entry, vim_item)
-					return vim_item
-				end,
 			}),
-		},
-		window = {
+		}
+
+		-- 補完ポップアップの見た目設定
+		local window = {
 			completion = cmp.config.window.bordered(),
 			documentation = cmp.config.window.bordered(),
-		},
-		mapping = cmp.mapping.preset.insert({
-			["<C-b>"] = cmp.mapping.scroll_docs(-4),
-			["<C-f>"] = cmp.mapping.scroll_docs(4),
-			["<C-Space>"] = cmp.mapping.complete(),
-			["<C-e>"] = cmp.mapping.abort(),
-			["<CR>"] = cmp.mapping.confirm({ select = false }),
-		}),
-		sources = cmp.config.sources({
+		}
+
+		-- キー操作のマッピング設定
+		local mapping = cmp.mapping.preset.insert({
+			["<CR>"] = cmp.mapping.confirm({ select = true }),
+		})
+
+		-- 補完の情報源（source）の定義
+		local sources = {
 			{ name = "nvim_lsp" },
-			{ name = "nvim_lua" },
 			{ name = "buffer" },
 			{ name = "path" },
-		}),
-	})
+		}
 
-	cmp.setup.cmdline(":", {
-		mapping = cmp.mapping.preset.cmdline(),
-		sources = cmp.config.sources({
-			{ name = "path" },
-		}, {
-			{ name = "cmdline" },
-		}),
-	})
-end
+		-- 最終的な cmp 設定
+		cmp.setup({
+			formatting = formatting,
+			window = window,
+			mapping = mapping,
+			sources = sources,
+		})
 
-return M
+		-- cmdline 用補完設定
+		cmp.setup.cmdline({ "/", "?" }, {
+			mapping = cmp.mapping.preset.cmdline(),
+			sources = {
+				{ name = "buffer" },
+			},
+		})
+
+		cmp.setup.cmdline(":", {
+			mapping = cmp.mapping.preset.cmdline(),
+			sources = cmp.config.sources({
+				{ name = "path" },
+			}, {
+				{ name = "cmdline" },
+			}),
+		})
+	end,
+}
