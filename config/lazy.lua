@@ -50,6 +50,10 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- LSPの設定
+vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
+vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+
 -- Telescopeの設定
 vim.keymap.set("n", "sf", '<cmd>lua require("telescope.builtin").find_files()<cr>', { noremap = true })
 vim.keymap.set("n", "sb", '<cmd>lua require("telescope.builtin").buffers()<cr>', { noremap = true })
