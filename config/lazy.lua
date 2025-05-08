@@ -50,14 +50,18 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- LSPの診断表示設定（エラーや警告の表示）
+vim.diagnostic.config({
+	virtual_text = true,
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
+})
+
 -- LSPの設定
 vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
 vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-
--- Telescopeの設定
-vim.keymap.set("n", "sf", '<cmd>lua require("telescope.builtin").find_files()<cr>', { noremap = true })
-vim.keymap.set("n", "sb", '<cmd>lua require("telescope.builtin").buffers()<cr>', { noremap = true })
-vim.keymap.set("n", "sh", '<cmd>lua require("telescope.builtin").help_tags()<cr>', { noremap = true })
 
 -- jjでインサートモードからノーマルモードに変更
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
@@ -137,10 +141,3 @@ require("lazy").setup({
 		{ import = "plugins" },
 	},
 })
-require("lualine").setup()
-
--- set space tab
--- vim.opt.expandtab = true
--- vim.o.tabstop = 2
--- vim.o.shiftwidth = 2
--- vim.o.softtabstop = 2
