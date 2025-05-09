@@ -2,12 +2,14 @@ return {
 	-- Mason: ツールの管理UI
 	{
 		"williamboman/mason.nvim",
+		version = "^1.0.0", -- v1 系に固定
 		config = true,
 	},
 
 	-- mason-lspconfig: mason と lspconfig の橋渡し
 	{
 		"williamboman/mason-lspconfig.nvim",
+		version = "^1.0.0", -- v1 系に固定
 		dependencies = {
 			"neovim/nvim-lspconfig", -- 各言語のLSP設定ライブラリ
 		},
