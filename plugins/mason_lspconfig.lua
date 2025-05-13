@@ -1,5 +1,5 @@
 return {
-	-- Mason: ツールの管理UI
+	-- mason: ツールの管理ui
 	{
 		"williamboman/mason.nvim",
 		version = "^1.0.0", -- v1 系に固定
@@ -11,15 +11,15 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		version = "^1.0.0", -- v1 系に固定
 		dependencies = {
-			"neovim/nvim-lspconfig", -- 各言語のLSP設定ライブラリ
+			"neovim/nvim-lspconfig", -- 各言語のlsp設定ライブラリ
 		},
 		config = function()
-			-- LSPサーバーを自動でインストール
+			-- lspサーバーを自動でインストール
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "terraformls", "marksman" },
+				ensure_installed = { "lua_ls", "terraformls", "marksman", "clangd" },
 			})
 
-			-- LSPサーバーを自動で lspconfig に渡す
+			-- lspサーバーを自動で lspconfig に渡す
 			require("mason-lspconfig").setup_handlers({
 				function(server_name)
 					local opts = {
@@ -38,7 +38,6 @@ return {
 							},
 						}
 					end
-
 					require("lspconfig")[server_name].setup(opts)
 				end,
 			})
