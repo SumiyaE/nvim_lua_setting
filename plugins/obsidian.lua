@@ -21,12 +21,12 @@ return {
 		workspaces = {
 			{
 				name = "scratches",
-				path = "~/Library/Application Support/JetBrains/IntelliJIdea2023.3/scratches",
+				path = "~/notes/",
 			},
 		},
 		daily_notes = {
 			-- Optional, if you keep daily notes in a separate directory.
-			folder = "日記",
+			folder = "📅 日記",
 			date_format = "%Y年%m月%d日",
 			-- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
 			template = nil,
