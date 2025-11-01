@@ -15,6 +15,29 @@ git clone https://github.com/SumiyaE/nvim_lua_setting.git nvim
 
 ## 各プラグインの説明
 
+### Claude Code (claudecode.nvim)
+
+Neovim内でClaude AIと対話できるプラグイン。コード生成、編集、質問応答などが可能。
+
+**キーマッピング:**
+- `<leader>ac` - Claude Codeのトグル（開く/閉じる）
+- `<leader>af` - Claude Codeにフォーカス
+- `<leader>ar` - 前回のセッションを再開
+- `<leader>aC` - 会話を継続
+- `<leader>am` - モデル選択（Sonnet, Opus, Haikuなど）
+- `<leader>ab` - 現在のバッファをClaudeに追加
+- `<leader>as` - 選択範囲をClaudeに送信（ビジュアルモード）
+- `<leader>as` - ファイルツリーからファイルを追加（NvimTree等）
+- `<leader>aa` - Claudeの提案した差分を承認
+- `<leader>ad` - Claudeの提案した差分を拒否
+
+**Diff Accept/Denyの使い方:**
+Claudeがコード変更を提案すると、まず差分（diff）として表示されます。
+- Accept (`<leader>aa`) - 提案を承認してファイルに適用
+- Deny (`<leader>ad`) - 提案を拒否して変更を破棄
+
+参考: https://github.com/coder/claudecode.nvim
+
 ----
 現在のnvimの設定はlazy.nvimを使用して管理している。
 そもそもlazy.nvimが何をしているのかわかっていない上に、luaも雰囲気で書いている状態なので改めて設定を調べてまとめる。
