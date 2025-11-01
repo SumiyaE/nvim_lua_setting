@@ -27,15 +27,8 @@ vim.opt.number = true
 vim.api.nvim_set_var("loaded_netrw", 1)
 vim.api.nvim_set_var("loaded_netrwPlugin", 1)
 
--- ウィンドウ移動（ノーマルモード）
-vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to down window" })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to up window" })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
-
--- ウィンドウ移動（ターミナルモード - 左右のみ）
-vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Move to left window from terminal" })
-vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Move to right window from terminal" })
+-- ウィンドウ移動とリサイズは smart-splits.nvim で管理
+-- （plugins/smart-splits.lua を参照）
 
 -- bufferを切り替えるためのキーマッピング
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true }) -- 次のバッファ

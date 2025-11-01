@@ -1,7 +1,13 @@
 return {
 	"coder/claudecode.nvim",
 	dependencies = { "folke/snacks.nvim" },
-	config = true,
+	opts = {
+		terminal = {
+			provider = "snacks", -- Neovim内分割を使用
+			split_side = "right", -- 右側に分割
+			split_width_percentage = 0.30, -- 幅30%
+		},
+	},
 	keys = {
 		{ "<leader>a", nil, desc = "AI/Claude Code" },
 		{ "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
@@ -22,4 +28,3 @@ return {
 		{ "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
 	},
 }
-

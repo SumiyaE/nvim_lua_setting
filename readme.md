@@ -38,6 +38,32 @@ Claudeがコード変更を提案すると、まず差分（diff）として表�
 
 参考: https://github.com/coder/claudecode.nvim
 
+### smart-splits.nvim & Hydra.nvim
+
+ウィンドウ間の移動とリサイズを効率化するプラグイン。
+
+**ウィンドウ移動（ノーマルモード）:**
+- `<C-h>` - 左のウィンドウへ移動
+- `<C-j>` - 下のウィンドウへ移動
+- `<C-k>` - 上のウィンドウへ移動
+- `<C-l>` - 右のウィンドウへ移動
+
+**ターミナルモードからの移動:**
+- `<C-h>`, `<C-j>`, `<C-k>`, `<C-l>` - ターミナルモードを抜けてウィンドウ移動
+
+**Hydraリサイズモード:**
+- `<leader>r` - リサイズモードに入る
+  - `h`, `j`, `k`, `l` - ウィンドウサイズを調整
+  - `H`, `J`, `K`, `L` - ウィンドウサイズを大きく調整（10単位）
+  - `q` または `<Esc>` - リサイズモードを終了
+
+**設定のポイント:**
+Hydra.nvimの`hint.border`オプションは非推奨となり、`hint.float_opts.border`を使用するように変更されています。
+
+参考:
+- https://github.com/mrjones2014/smart-splits.nvim
+- https://github.com/nvimtools/hydra.nvim
+
 ----
 現在のnvimの設定はlazy.nvimを使用して管理している。
 そもそもlazy.nvimが何をしているのかわかっていない上に、luaも雰囲気で書いている状態なので改めて設定を調べてまとめる。
