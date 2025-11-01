@@ -27,16 +27,15 @@ vim.opt.number = true
 vim.api.nvim_set_var("loaded_netrw", 1)
 vim.api.nvim_set_var("loaded_netrwPlugin", 1)
 
--- nnoremap <silent> tt <cmd>terminal<CR>に相当。
--- 新規タブでターミナルモードを起動
--- vim.keymap.set('n', 'tt', '<cmd>terminal<CR>', {silent = true})
-vim.keymap.set("n", "tt", "<cmd>tabnew | terminal<CR>", { silent = true })
--- 下分割でターミナルモードを起動
-vim.keymap.set("n", "tx", "<cmd>belowright new<CR><cmd>terminal<CR>", { silent = true })
+-- ウィンドウ移動（ノーマルモード）
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to down window" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to up window" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
 
--- tnoremap <ESC> <c-\><c-n>に相当。
--- ターミナルモードでESCでノーマルモードに戻る
-vim.keymap.set("t", "<ESC>", "<c-\\><c-n>", { silent = true })
+-- ウィンドウ移動（ターミナルモード - 左右のみ）
+vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Move to left window from terminal" })
+vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Move to right window from terminal" })
 
 -- bufferを切り替えるためのキーマッピング
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true }) -- 次のバッファ
@@ -81,23 +80,6 @@ vim.opt.termguicolors = true
 
 -- システムクリップボードを使用
 vim.opt.clipboard:append({ "unnamedplus" })
-
--- ターミナルモードで起動時にinsertモードにする
-vim.api.nvim_create_autocmd({ "TermOpen" }, {
-	pattern = "*",
-	command = "startinsert",
-})
--- eqaul to below setting
--- vim.cmd 'autocmd TermOpen * startinsert'
-
--- ターミナルモードで起動時に行番号を非表示にする
-vim.api.nvim_create_autocmd("TermOpen", {
-	pattern = "*",
-	callback = function()
-		vim.opt_local.relativenumber = false
-		vim.opt_local.number = false
-	end,
-})
 
 -- 保存時に view を保存
 -- こうすることで、vimを終了しても折りたたみやカーソル位置が保存される
