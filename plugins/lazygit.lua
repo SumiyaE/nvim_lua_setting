@@ -1,19 +1,15 @@
 return {
 	"kdheepak/lazygit.nvim",
-	lazy = true,
-	cmd = {
-		"LazyGit",
-		"LazyGitConfig",
-		"LazyGitCurrentFile",
-		"LazyGitFilter",
-		"LazyGitFilterCurrentFile",
-	},
-	-- optional for floating window border decoration
+	lazy = false, -- 起動を高速化するため、事前ロード
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
-	-- setting the keybinding for LazyGit with 'keys' is recommended in
-	-- order to load the plugin when the command is run for the first time
+	config = function()
+		-- LazyGitのウィンドウサイズを設定
+		vim.g.lazygit_floating_window_winblend = 0 -- 透明度
+		vim.g.lazygit_floating_window_scaling_factor = 0.8 -- サイズ（80%）
+		vim.g.lazygit_floating_window_use_plenary = 0 -- plenaryを使わない（高速化）
+	end,
 	keys = {
 		{ "<leader>g", "<cmd>LazyGit<cr>", desc = "LazyGit" },
 	},

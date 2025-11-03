@@ -20,6 +20,9 @@ vim.opt.rtp:prepend(lazypath)
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
 
+-- leaderキーの反応速度を上げる（デフォルト: 1000ms → 300ms）
+vim.opt.timeoutlen = 300
+
 -- 行番号の表示
 vim.opt.number = true
 

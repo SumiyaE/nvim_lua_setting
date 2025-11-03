@@ -6,11 +6,15 @@ return {
 		require("smart-splits").setup({
 			-- リサイズの量（デフォルトは3、少し大きめに5に設定）
 			default_amount = 5,
-			-- サイドバー系のバッファを無視
+			-- サイドバー系のバッファのみを無視（ターミナルは含めない）
 			ignored_filetypes = {
 				"NvimTree",
 				"neo-tree",
+			},
+			ignored_buftypes = {
 				"nofile",
+				"quickfix",
+				"prompt",
 			},
 		})
 
@@ -21,18 +25,11 @@ return {
 		vim.keymap.set("n", "<C-l>", require("smart-splits").move_cursor_right, { desc = "Move to right window" })
 
 		-- ターミナルモードからのウィンドウ移動
+		-- Claude Codeのターミナルと干渉するため、左右のみに制限
 		vim.keymap.set("t", "<C-h>", function()
 			vim.cmd("stopinsert")
 			require("smart-splits").move_cursor_left()
 		end, { desc = "Move to left window from terminal" })
-		vim.keymap.set("t", "<C-j>", function()
-			vim.cmd("stopinsert")
-			require("smart-splits").move_cursor_down()
-		end, { desc = "Move to down window from terminal" })
-		vim.keymap.set("t", "<C-k>", function()
-			vim.cmd("stopinsert")
-			require("smart-splits").move_cursor_up()
-		end, { desc = "Move to up window from terminal" })
 		vim.keymap.set("t", "<C-l>", function()
 			vim.cmd("stopinsert")
 			require("smart-splits").move_cursor_right()
@@ -40,7 +37,7 @@ return {
 
 		-- Hydraを使ったリサイズモード
 		local Hydra = require("hydra")
-		Hydra({
+		local resize_hydra = Hydra({
 			name = "Window Resize",
 			mode = "n",
 			body = "<leader>r", -- スペース + r でリサイズモードに入る
@@ -106,6 +103,12 @@ return {
 				{ "<Esc>", nil, { exit = true, desc = "exit" } },
 			},
 		})
+
+		-- ターミナルモードからもリサイズモードに入れるようにする
+		vim.keymap.set("t", "<leader>r", function()
+			vim.cmd("stopinsert") -- ターミナルモードを抜ける
+			resize_hydra:activate() -- リサイズモードをアクティベート
+		end, { desc = "Enter resize mode from terminal" })
 	end,
 }
 
