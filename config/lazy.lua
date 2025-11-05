@@ -77,6 +77,39 @@ vim.opt.termguicolors = true
 -- システムクリップボードを使用
 vim.opt.clipboard:append({ "unnamedplus" })
 
+-- ウィンドウフォーカスを視覚的に分かりやすくする設定
+vim.opt.cursorline = true -- カーソル行をハイライト
+
+-- アクティブなウィンドウでのみcursorlineを表示
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+	pattern = "*",
+	callback = function()
+		vim.opt_local.cursorline = true
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
+	pattern = "*",
+	callback = function()
+		vim.opt_local.cursorline = false
+	end,
+})
+
+-- 非アクティブなウィンドウを暗くする
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+	pattern = "*",
+	callback = function()
+		vim.opt_local.winhighlight = "Normal:Normal,NormalNC:Normal"
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
+	pattern = "*",
+	callback = function()
+		vim.opt_local.winhighlight = "Normal:NormalNC"
+	end,
+})
+
 -- 保存時に view を保存
 -- こうすることで、vimを終了しても折りたたみやカーソル位置が保存される
 vim.api.nvim_create_autocmd("BufWritePost", {

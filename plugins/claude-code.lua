@@ -7,6 +7,12 @@ return {
 			split_side = "right", -- 右側に分割
 			split_width_percentage = 0.30, -- 幅30%
 		},
+		diff_opts = {
+			auto_close_on_accept = true, -- 承認後に自動でdiffウィンドウを閉じる
+			vertical_split = true, -- 垂直分割を使用
+			open_in_current_tab = false, -- 新しいタブで開かない（現在のタブ内に留める）
+			keep_terminal_focus = true, -- diffが開いてもターミナルのフォーカスを保持
+		},
 	},
 	keys = {
 		{ "<leader>a", nil, desc = "AI/Claude Code" },

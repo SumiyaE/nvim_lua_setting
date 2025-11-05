@@ -4,5 +4,11 @@ return {
 		vim.cmd("colorscheme Nordfox")
 		vim.cmd("highlight! link WinSeparator GlyphPalette2")
 		vim.cmd("highlight! Visual guibg=#4a3332")
+
+		-- 非アクティブなウィンドウを少し暗くする
+		vim.cmd("highlight! NormalNC guibg=#232831")
+
+		-- ウィンドウの境界線を見やすくする
+		vim.cmd("highlight! WinSeparator guifg=#5a657d")
 	end,
 }
