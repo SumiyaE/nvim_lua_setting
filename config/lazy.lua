@@ -95,18 +95,86 @@ vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
 	end,
 })
 
--- 非アクティブなウィンドウを暗くする
+-- 非アクティブなウィンドウを暗くする（背景、文字色、シンタックスハイライト）
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
 	pattern = "*",
 	callback = function()
-		vim.opt_local.winhighlight = "Normal:Normal,NormalNC:Normal"
+		vim.opt_local.winhighlight = "Normal:Normal,NormalNC:Normal,LineNr:LineNr"
 	end,
 })
 
 vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
 	pattern = "*",
 	callback = function()
-		vim.opt_local.winhighlight = "Normal:NormalNC"
+		-- 非アクティブなウィンドウで全ての色を薄くする
+		vim.opt_local.winhighlight = table.concat({
+			"Normal:NormalNC",
+			"LineNr:LineNrNC",
+			"Keyword:KeywordNC",
+			"Function:FunctionNC",
+			"String:StringNC",
+			"Comment:CommentNC",
+			"Constant:ConstantNC",
+			"Type:TypeNC",
+			"Identifier:IdentifierNC",
+			"Operator:OperatorNC",
+			"Special:SpecialNC",
+			"@keyword:KeywordNC",
+			"@function:FunctionNC",
+			"@string:StringNC",
+			"@comment:CommentNC",
+			"@constant:ConstantNC",
+			"@type:TypeNC",
+			"@variable:IdentifierNC",
+			"@operator:OperatorNC",
+		}, ",")
+	end,
+})
+
+-- Claude Codeの通知設定
+-- 手動で通知を送るコマンド
+vim.api.nvim_create_user_command("ClaudeNotify", function()
+	-- Snacks.nvimの通知
+	if pcall(require, "snacks") then
+		require("snacks").notifier.notify("作業を確認してください", {
+			title = "🤖 Claude Code",
+			level = "info",
+		})
+	end
+	-- macOSのシステム通知も送る
+	vim.fn.system([[osascript -e 'display notification "作業を確認してください" with title "Claude Code"']])
+	-- ベルも鳴らす
+	vim.cmd("echo '\a'")
+end, {})
+
+-- キーマッピング: <leader>an でClaude Codeの通知を手動で送る
+vim.keymap.set("n", "<leader>an", "<cmd>ClaudeNotify<cr>", { desc = "Claude Code通知" })
+
+-- Claude Codeのターミナルにフォーカスが戻ったときに音を鳴らす（オプション）
+local claude_last_line_count = {}
+vim.api.nvim_create_autocmd({ "BufEnter", "TermEnter" }, {
+	pattern = "*",
+	callback = function()
+		local bufname = vim.api.nvim_buf_get_name(0)
+		if bufname:match("claudecode") or bufname:match("snacks_terminal") then
+			local buf = vim.api.nvim_get_current_buf()
+			local current_lines = vim.api.nvim_buf_line_count(buf)
+
+			-- 前回の行数と比較して、増えていたら通知
+			if claude_last_line_count[buf] and current_lines > claude_last_line_count[buf] + 5 then
+				-- 5行以上増えていたら通知（Claude Codeが応答した可能性が高い）
+				if pcall(require, "snacks") then
+					require("snacks").notifier.notify("新しい応答があります", {
+						title = "🤖 Claude Code",
+						level = "info",
+					})
+				end
+				-- 音を鳴らす
+				vim.cmd("echo '\a'")
+			end
+
+			claude_last_line_count[buf] = current_lines
+		end
 	end,
 })
 
