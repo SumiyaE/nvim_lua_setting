@@ -5,10 +5,10 @@ return {
 		vim.cmd("highlight! link WinSeparator GlyphPalette2")
 		vim.cmd("highlight! Visual guibg=#4a3332")
 
-		-- 非アクティブなウィンドウを少し暗くする
-		vim.cmd("highlight! NormalNC guibg=#232831")
+		-- 非アクティブなウィンドウをかなり暗くする
+		vim.cmd("highlight! NormalNC guibg=#1a1f28")
 
-		-- ウィンドウの境界線を見やすくする
-		vim.cmd("highlight! WinSeparator guifg=#5a657d")
+		-- ウィンドウの境界線を明るく見やすくする
+		vim.cmd("highlight! WinSeparator guifg=#81a1c1 gui=bold")
 	end,
 }
