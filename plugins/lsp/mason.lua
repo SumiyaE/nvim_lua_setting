@@ -1,20 +1,24 @@
 return {
-	"williamboman/mason.nvim",
+	"mason-org/mason.nvim",
 	dependencies = {
 		"neovim/nvim-lspconfig",
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 	},
 	config = function()
 		-- mason自体のセットアップ
 		require("mason").setup()
 
-		-- デフォルトのcapabilitiesを全サーバーに適用
+		-- デフォルトのcapabilitiesを取得
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+		-- 全サーバー共通のデフォルト設定
 		vim.lsp.config["*"] = {
-			capabilities = require("cmp_nvim_lsp").default_capabilities(),
+			capabilities = capabilities,
 		}
 
 		-- lua_ls専用の設定
 		vim.lsp.config.lua_ls = {
+			capabilities = capabilities,
 			settings = {
 				Lua = {
 					diagnostics = {
@@ -24,7 +28,7 @@ return {
 			},
 		}
 
-		-- mason-lspconfigのセットアップ（自動でvim.lsp.enable()を呼び出す）
+		-- mason-lspconfigのセットアップ
 		require("mason-lspconfig").setup({
 			ensure_installed = { "lua_ls", "terraformls", "marksman", "clangd" },
 		})
