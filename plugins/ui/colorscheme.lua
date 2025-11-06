@@ -1,17 +1,20 @@
 return {
-	"morhetz/gruvbox",
+	"EdenEast/nightfox.nvim",
 	priority = 1000,
 	config = function()
-		-- Gruvbox設定
-		vim.g.gruvbox_contrast_dark = "soft" -- soft, medium, hard
-		vim.g.gruvbox_italic = 1
-		vim.g.gruvbox_bold = 1
-		vim.g.gruvbox_underline = 1
-		vim.g.gruvbox_undercurl = 1
+		require("nightfox").setup({
+			options = {
+				transparent = false,
+				terminal_colors = true,
+				dim_inactive = false,
+				styles = {
+					comments = "italic",
+					keywords = "bold",
+					types = "italic,bold",
+				},
+			},
+		})
 
-		-- 背景をダークモードに設定
-		vim.opt.background = "dark"
-
-		vim.cmd.colorscheme("gruvbox")
+		vim.cmd.colorscheme("nightfox")
 	end,
 }
