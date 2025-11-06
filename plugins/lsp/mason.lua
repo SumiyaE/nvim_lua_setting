@@ -1,6 +1,5 @@
 return {
 	"williamboman/mason.nvim",
-	version = "^1.0.0", -- v1 系に固定
 	dependencies = {
 		"williamboman/mason-lspconfig.nvim",
 		"neovim/nvim-lspconfig",
@@ -14,24 +13,29 @@ return {
 			ensure_installed = { "lua_ls", "terraformls", "marksman", "clangd" },
 		})
 
-		-- lspサーバーを自動で lspconfig に渡す
-		require("mason-lspconfig").setup_handlers({
-			function(server_name)
-				local opts = {
-					capabilities = require("cmp_nvim_lsp").default_capabilities(),
-				}
+		-- デフォルトのcapabilitiesを取得
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-				-- .luaを起動した際に、"vim"のグローバル変数に対する警告を無視する。
-				if server_name == "lua_ls" then
-					opts.settings = {
+		-- lspサーバーを自動で設定
+		require("mason-lspconfig").setup_handlers({
+			-- デフォルトハンドラー
+			function(server_name)
+				require("lspconfig")[server_name].setup({
+					capabilities = capabilities,
+				})
+			end,
+			-- lua_ls専用の設定
+			["lua_ls"] = function()
+				require("lspconfig").lua_ls.setup({
+					capabilities = capabilities,
+					settings = {
 						Lua = {
 							diagnostics = {
 								globals = { "vim" },
 							},
 						},
-					}
-				end
-				require("lspconfig")[server_name].setup(opts)
+					},
+				})
 			end,
 		})
 	end,
