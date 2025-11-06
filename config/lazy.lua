@@ -32,7 +32,13 @@ require("config.autocmds") -- Autocmd定義
 -- Setup lazy.nvim
 require("lazy").setup({
 	spec = {
-		-- import your plugins
-		{ import = "plugins" },
+		-- import plugins from subdirectories
+		{ import = "plugins.lsp" },
+		{ import = "plugins.git" },
+		{ import = "plugins.ui" },
+		{ import = "plugins.editor" },
+		{ import = "plugins.markdown" },
+		{ import = "plugins.ai" },
+		{ import = "plugins.misc" },
 	},
 })
