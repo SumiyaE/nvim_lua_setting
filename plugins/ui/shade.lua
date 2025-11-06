@@ -18,7 +18,26 @@ return {
 			exclude_buftypes = {
 				"terminal",
 				"nofile",
+				"prompt",
 			},
+		})
+
+		-- smart-splits.nvimとの競合を避けるため、WinEnterイベント時の処理を保護
+		local shade_group = vim.api.nvim_create_augroup("ShadeProtection", { clear = true })
+		vim.api.nvim_create_autocmd("WinEnter", {
+			group = shade_group,
+			callback = function()
+				-- ウィンドウが有効かどうかを確認してからShadeを適用
+				vim.schedule(function()
+					local current_win = vim.api.nvim_get_current_win()
+					if vim.api.nvim_win_is_valid(current_win) then
+						-- Shadeの処理を安全に実行
+						pcall(function()
+							require("shade").refresh()
+						end)
+					end
+				end)
+			end,
 		})
 	end,
 }
