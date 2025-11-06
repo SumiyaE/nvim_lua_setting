@@ -95,7 +95,8 @@ vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
 	end,
 })
 
--- 非アクティブなウィンドウを暗くする（背景、文字色、シンタックスハイライト）
+-- 非アクティブなウィンドウを暗くする（背景と行番号）
+-- シンタックスハイライトの暗色化はShade.nvimが担当
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
 	pattern = "*",
 	callback = function()
@@ -106,28 +107,7 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
 vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
 	pattern = "*",
 	callback = function()
-		-- 非アクティブなウィンドウで全ての色を薄くする
-		vim.opt_local.winhighlight = table.concat({
-			"Normal:NormalNC",
-			"LineNr:LineNrNC",
-			"Keyword:KeywordNC",
-			"Function:FunctionNC",
-			"String:StringNC",
-			"Comment:CommentNC",
-			"Constant:ConstantNC",
-			"Type:TypeNC",
-			"Identifier:IdentifierNC",
-			"Operator:OperatorNC",
-			"Special:SpecialNC",
-			"@keyword:KeywordNC",
-			"@function:FunctionNC",
-			"@string:StringNC",
-			"@comment:CommentNC",
-			"@constant:ConstantNC",
-			"@type:TypeNC",
-			"@variable:IdentifierNC",
-			"@operator:OperatorNC",
-		}, ",")
+		vim.opt_local.winhighlight = "Normal:NormalNC,LineNr:LineNrNC"
 	end,
 })
 
