@@ -1,0 +1,44 @@
+-- ===================================================================
+-- Neovim基本設定
+-- ===================================================================
+-- このファイルはNeovimのグローバル設定を管理します
+
+local opt = vim.opt
+local g = vim.g
+
+-- ===== Leader設定 =====
+g.mapleader = " "
+
+-- ===== タイミング設定 =====
+opt.timeoutlen = 300 -- leaderキーの反応速度
+
+-- ===== UI設定 =====
+opt.number = true -- 行番号の表示
+opt.cursorline = true -- カーソル行をハイライト
+opt.termguicolors = true -- True colorサポート
+
+-- ===== 編集設定 =====
+opt.clipboard:append({ "unnamedplus" }) -- システムクリップボードを使用
+
+-- タブ設定（グローバル）
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.softtabstop = 2
+opt.expandtab = true
+
+-- ===== View設定 =====
+opt.viewoptions:remove("options") -- viewにオプションを保存しない
+
+-- ===== netrw無効化 =====
+-- nvim-treeを使用するため、組み込みのnetrwを無効化
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
+
+-- ===== LSP診断設定 =====
+vim.diagnostic.config({
+	virtual_text = true,
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
+})
