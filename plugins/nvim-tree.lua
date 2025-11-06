@@ -24,9 +24,9 @@ return {
 				dotfiles = false,
 			},
 		})
-		-- キーマップ（例：<leader>e でトグル）
+		-- キーマップ
 		vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle NvimTree" })
-		vim.keymap.set("n", "<leader>b", "<cmd>NvimTreeFindFileToggle<CR>", { desc = "Toggle NvimTree" })
+		vim.keymap.set("n", "<leader>b", "<cmd>NvimTreeFindFileToggle<CR>", { desc = "Find current file in NvimTree" })
 
 		-- 境界の色を変更
 		vim.cmd([[highlight NvimTreeWinSeparator guifg=#888888 guibg=None]])

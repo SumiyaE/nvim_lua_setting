@@ -1,9 +1,6 @@
 return {
 	"kdheepak/lazygit.nvim",
 	lazy = false, -- 起動を高速化するため、事前ロード
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-	},
 	config = function()
 		-- LazyGitのウィンドウサイズを設定
 		vim.g.lazygit_floating_window_winblend = 0 -- 透明度

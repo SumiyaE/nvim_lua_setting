@@ -28,12 +28,10 @@ return {
 
 					-- .luaを起動した際に、"vim"のグローバル変数に対する警告を無視する。
 					if server_name == "lua_ls" then
-						opts = {
-							settings = {
-								Lua = {
-									diagnostics = {
-										globals = { "vim" },
-									},
+						opts.settings = {
+							Lua = {
+								diagnostics = {
+									globals = { "vim" },
 								},
 							},
 						}

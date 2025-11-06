@@ -27,8 +27,8 @@ vim.opt.timeoutlen = 300
 vim.opt.number = true
 
 -- nvim-treeを使用するため、netrwを無効化
-vim.api.nvim_set_var("loaded_netrw", 1)
-vim.api.nvim_set_var("loaded_netrwPlugin", 1)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- ウィンドウ移動とリサイズは smart-splits.nvim で管理
 -- （plugins/smart-splits.lua を参照）
@@ -59,13 +59,9 @@ vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
 vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
 
 -- jjでインサートモードからノーマルモードに変更
-vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
+vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 
 -- vvでクリップボードの画像をマークダウン形式で貼り付け
--- vim.keymap.set('i', 'vv', function()
---   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', true)
---   vim.cmd('r! paste_image_on_vim_markdown')
--- end, { noremap = true, silent = true, desc = "Insert image from clipboard (Markdown)" })
 vim.keymap.set("i", "vv", function()
 	vim.api.nvim_input("<Esc>")
 	local output = vim.fn.system("paste_image_on_vim_markdown")
@@ -92,22 +88,6 @@ vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
 	pattern = "*",
 	callback = function()
 		vim.opt_local.cursorline = false
-	end,
-})
-
--- 非アクティブなウィンドウを暗くする（背景と行番号）
--- シンタックスハイライトの暗色化はShade.nvimが担当
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
-	pattern = "*",
-	callback = function()
-		vim.opt_local.winhighlight = "Normal:Normal,NormalNC:Normal,LineNr:LineNr"
-	end,
-})
-
-vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
-	pattern = "*",
-	callback = function()
-		vim.opt_local.winhighlight = "Normal:NormalNC,LineNr:LineNrNC"
 	end,
 })
 
