@@ -9,6 +9,8 @@ return {
 				brightness_down = "<C-Down>", -- 明るさを下げる
 				toggle = "<Leader>s", -- Shadeのオン/オフ切り替え
 			},
+			exclude_filetypes = { "snacks_terminal" }, -- ClaudeCodeのターミナルを除外
+			exclude_buftypes = { "terminal" }, -- ターミナルバッファを除外
 		})
 	end,
 }
