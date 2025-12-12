@@ -9,7 +9,7 @@ local autocmd = vim.api.nvim_create_autocmd
 autocmd("FileType", {
 	pattern = "markdown",
 	callback = function()
-		vim.opt_local.conceallevel = 1
+		vim.opt_local.conceallevel = 0
 	end,
 	desc = "Set conceallevel for Markdown files",
 })

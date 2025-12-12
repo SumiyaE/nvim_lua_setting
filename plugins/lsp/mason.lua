@@ -3,6 +3,7 @@ return {
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		"mason-org/mason-lspconfig.nvim",
+		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
 		-- mason自体のセットアップ

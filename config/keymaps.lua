@@ -55,3 +55,47 @@ end, {
 keymap("n", "<leader>an", "<cmd>ClaudeNotify<cr>", {
 	desc = "Send Claude Code notification",
 })
+
+-- ===== ファイル参照コピー =====
+-- 共通関数: パスと行番号をコピー
+local function copy_file_reference(use_absolute_path)
+	local start_line = vim.fn.line("v")
+	local end_line = vim.fn.line(".")
+
+	if start_line > end_line then
+		start_line, end_line = end_line, start_line
+	end
+
+	local path = use_absolute_path and vim.fn.expand("%:p") or vim.fn.expand("%:.")
+	local result
+	if start_line == end_line then
+		result = path .. ":" .. start_line
+	else
+		result = path .. ":" .. start_line .. "-" .. end_line
+	end
+
+	vim.fn.setreg("+", result)
+	vim.notify("Copied: " .. result, vim.log.levels.INFO)
+
+	-- ビジュアルモード終了
+	local esc = vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
+	vim.api.nvim_feedkeys(esc, "n", false)
+end
+
+-- 相対パス
+keymap("v", "<leader>yr", function()
+	copy_file_reference(false)
+end, {
+	noremap = true,
+	silent = true,
+	desc = "Copy file:line reference (relative)",
+})
+
+-- 絶対パス
+keymap("v", "<leader>yR", function()
+	copy_file_reference(true)
+end, {
+	noremap = true,
+	silent = true,
+	desc = "Copy file:line reference (absolute)",
+})
