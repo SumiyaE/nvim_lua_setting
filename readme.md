@@ -64,6 +64,40 @@ Hydra.nvimの`hint.border`オプションは非推奨となり、`hint.float_opt
 - https://github.com/mrjones2014/smart-splits.nvim
 - https://github.com/nvimtools/hydra.nvim
 
+### vim-macos-ime
+
+macOSで日本語入力時にノーマルモードに戻ると自動で英語入力に切り替えるプラグイン。
+
+**前提条件:**
+macismのインストールが必要。
+```bash
+brew tap laishulu/homebrew
+brew install macism
+```
+
+**動作:**
+| イベント | 動作 |
+|----------|------|
+| InsertLeave（ESC/jj） | 自動で英語入力に切り替え |
+| InsertEnter | 直前の文字が日本語なら日本語入力に復帰 |
+
+**設定の仕組み:**
+- `macism` - macOSに入力ソース切り替えを命令するCLIツール
+- `vim-macos-ime` - いつ・何に切り替えるかを判断するプラグイン
+
+**入力ソースIDの確認方法:**
+```bash
+# 現在の入力ソースを表示
+macism
+# 日本語に切り替えてから再度実行すると日本語のIDが表示される
+```
+
+**注意点:**
+- 日本語入力中の`jj`は使えない（「っj」になるため）。日本語入力中はESCを使用
+- ブラウザ等から戻った時は手動で英語に切り替える必要あり
+
+参考: https://github.com/laishulu/vim-macos-ime
+
 ----
 現在のnvimの設定はlazy.nvimを使用して管理している。
 そもそもlazy.nvimが何をしているのかわかっていない上に、luaも雰囲気で書いている状態なので改めて設定を調べてまとめる。
@@ -191,3 +225,7 @@ require("lazy").setup({
 lazygitのおかげでかなりeditorのようになった。
 terraformぐらいの書き方が決まっている言語であれば、vimで開発しても良いぐらい快適になってきた。
 とはいえ、terraformを使用するときにコード補完ができていないので、そこを解消した
+
+まずは日本語を入力します。ありがとうありがとう便利だなぁこれめっちゃ助かるこれ
+
+thankyouiii

@@ -29,11 +29,6 @@ opt.expandtab = true
 -- ===== View設定 =====
 opt.viewoptions:remove("options") -- viewにオプションを保存しない
 
--- ===== netrw無効化 =====
--- neo-treeを使用するため、組み込みのnetrwを無効化
-g.loaded_netrw = 1
-g.loaded_netrwPlugin = 1
-
 -- ===== LSP診断設定 =====
 vim.diagnostic.config({
 	virtual_text = true,

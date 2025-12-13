@@ -9,6 +9,8 @@ return {
 	config = function()
 		require("neo-tree").setup({
 			close_if_last_window = true,
+			-- ディレクトリを開いた時にneo-treeで表示
+			hijack_netrw_behavior = "open_current",
 			filesystem = {
 				filtered_items = {
 					visible = true,
