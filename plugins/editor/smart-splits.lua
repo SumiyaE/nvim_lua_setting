@@ -8,7 +8,6 @@ return {
 			default_amount = 5,
 			-- サイドバー系のバッファのみを無視（ターミナルは含めない）
 			ignored_filetypes = {
-				"NvimTree",
 				"neo-tree",
 			},
 			ignored_buftypes = {

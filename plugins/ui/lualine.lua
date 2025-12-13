@@ -153,7 +153,7 @@ return {
 				lualine_y = {},
 				lualine_z = {},
 			},
-			extensions = { "nvim-tree", "lazy" },
+			extensions = { "neo-tree", "lazy" },
 		})
 	end,
 }
