@@ -32,47 +32,6 @@ autocmd({ "WinLeave", "BufLeave" }, {
 	desc = "Disable cursorline in inactive window",
 })
 
--- ===== Claude Code通知機能 =====
--- 手動通知コマンド
-vim.api.nvim_create_user_command("ClaudeNotify", function()
-	if pcall(require, "snacks") then
-		require("snacks").notifier.notify("作業を確認してください", {
-			title = "🤖 Claude Code",
-			level = "info",
-		})
-	end
-	vim.fn.system([[osascript -e 'display notification "作業を確認してください" with title "Claude Code"']])
-	vim.cmd("echo '\a'")
-end, { desc = "Send Claude Code notification" })
-
--- Claude Codeターミナルの自動通知
-local claude_last_line_count = {}
-autocmd({ "BufEnter", "TermEnter" }, {
-	pattern = "*",
-	callback = function()
-		local bufname = vim.api.nvim_buf_get_name(0)
-		if bufname:match("claudecode") or bufname:match("snacks_terminal") then
-			local buf = vim.api.nvim_get_current_buf()
-			local current_lines = vim.api.nvim_buf_line_count(buf)
-
-			-- 前回の行数と比較して、増えていたら通知
-			if claude_last_line_count[buf] and current_lines > claude_last_line_count[buf] + 5 then
-				-- 5行以上増えていたら通知（Claude Codeが応答した可能性が高い）
-				if pcall(require, "snacks") then
-					require("snacks").notifier.notify("新しい応答があります", {
-						title = "🤖 Claude Code",
-						level = "info",
-					})
-				end
-				vim.cmd("echo '\a'")
-			end
-
-			claude_last_line_count[buf] = current_lines
-		end
-	end,
-	desc = "Claude Code terminal notification",
-})
-
 -- ===== View保存（折りたたみ・カーソル位置） =====
 -- 保存時に view を保存
 autocmd("BufWritePost", {

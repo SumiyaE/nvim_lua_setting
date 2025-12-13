@@ -51,11 +51,6 @@ end, {
 	desc = "Insert image from clipboard (Markdown)",
 })
 
--- ===== Claude Code通知 =====
-keymap("n", "<leader>an", "<cmd>ClaudeNotify<cr>", {
-	desc = "Send Claude Code notification",
-})
-
 -- ===== ファイル参照コピー =====
 -- 共通関数: パスと行番号をコピー
 local function copy_file_reference(use_absolute_path)
