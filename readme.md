@@ -158,6 +158,7 @@ lazy.luaが実行しているsetup関数は、lazy.nvimの関数で、モジュ�
 
 ## lazy.luaの中で実行されるrequire("lazy")の`lazy`は何を指しているのか？
 ~/.local/share/nvim/lazy/lazy.nvimを指している。ここをlazy.nvimのインストール先として指定しているのが、以下の記述。
+
 ```lua
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
