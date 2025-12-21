@@ -32,10 +32,6 @@ keymap("n", "<C-x>", ":bd<CR>", {
 })
 
 -- ===== LSP =====
-keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", {
-	desc = "LSP: Go to references",
-})
-
 keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {
 	desc = "LSP: Go to definition",
 })

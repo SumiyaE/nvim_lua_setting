@@ -8,5 +8,6 @@ return {
 		vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope: Live grep" })
 		vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope: Find buffers" })
 		vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope: Help tags" })
+		vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "Telescope: Resume last search" })
 	end,
 }

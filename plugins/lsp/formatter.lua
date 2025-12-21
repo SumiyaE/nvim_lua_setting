@@ -6,11 +6,17 @@ return {
 				lua = { "stylua" },
 				markdown = { "prettier" },
 				zsh = { "shfmt" },
+				jsonnet = {},
 			},
-			format_on_save = {
-				timeout_ms = 500,
-				lsp_format = "fallback",
-			},
+			format_on_save = function(bufnr)
+				if vim.bo[bufnr].filetype == "jsonnet" then
+					return nil
+				end
+				return {
+					timeout_ms = 500,
+					lsp_format = "fallback",
+				}
+			end,
 		})
 	end,
 }
