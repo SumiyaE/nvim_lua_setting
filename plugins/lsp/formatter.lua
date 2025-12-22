@@ -9,7 +9,8 @@ return {
 				jsonnet = {},
 			},
 			format_on_save = function(bufnr)
-				if vim.bo[bufnr].filetype == "jsonnet" then
+				local ft = vim.bo[bufnr].filetype
+				if ft == "jsonnet" or ft == "php" then
 					return nil
 				end
 				return {

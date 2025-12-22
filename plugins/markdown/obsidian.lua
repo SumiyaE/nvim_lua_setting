@@ -9,6 +9,15 @@ return {
 
 		-- see below for full list of optional dependencies 👇
 	},
+	config = function(_, opts)
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "markdown",
+			callback = function()
+				vim.opt_local.conceallevel = 1
+			end,
+		})
+		require("obsidian").setup(opts)
+	end,
 	opts = {
 		workspaces = {
 			{
