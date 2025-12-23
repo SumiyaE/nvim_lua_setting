@@ -22,6 +22,7 @@ return {
       nexthist = ">",
       stoggleup = "K",
       stoggledown = "J",
+      quit = "q",
     },
   },
   config = function(_, opts)
