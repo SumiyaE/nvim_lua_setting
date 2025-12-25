@@ -51,6 +51,11 @@ return {
 			window = {
 				position = "left",
 				width = 30,
+				mappings = {
+					["<Tab>"] = "noop", -- グローバルなTabマッピングを無効化
+					["<S-Tab>"] = "noop", -- グローバルなShift+Tabマッピングを無効化
+					["<C-x>"] = "noop", -- グローバルなCtrl+xマッピングを無効化
+				},
 			},
 		})
 

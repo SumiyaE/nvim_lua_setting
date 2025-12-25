@@ -5,15 +5,6 @@
 
 local autocmd = vim.api.nvim_create_autocmd
 
--- ===== Markdown設定 =====
-autocmd("FileType", {
-	pattern = "markdown",
-	callback = function()
-		vim.opt_local.conceallevel = 0
-	end,
-	desc = "Set conceallevel for Markdown files",
-})
-
 -- ===== ウィンドウフォーカス視覚化 =====
 -- アクティブなウィンドウでのみcursorlineを表示
 autocmd({ "WinEnter", "BufEnter" }, {

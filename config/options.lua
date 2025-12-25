@@ -16,6 +16,7 @@ opt.timeoutlen = 300 -- leaderキーの反応速度
 opt.number = true -- 行番号の表示
 opt.cursorline = true -- カーソル行をハイライト
 opt.termguicolors = true -- True colorサポート
+opt.conceallevel = 1 -- Obsidian.nvimのUI機能用
 
 -- ===== 編集設定 =====
 opt.clipboard:append({ "unnamedplus" }) -- システムクリップボードを使用
