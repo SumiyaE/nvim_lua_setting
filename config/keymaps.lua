@@ -25,7 +25,9 @@ keymap("n", "<S-Tab>", ":bprevious<CR>", {
 	desc = "Previous buffer",
 })
 
-keymap("n", "<C-x>", ":bd<CR>", {
+keymap("n", "<C-x>", function()
+	require("mini.bufremove").delete()
+end, {
 	noremap = true,
 	silent = true,
 	desc = "Close buffer",
