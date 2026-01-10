@@ -92,3 +92,12 @@ end, {
 	silent = true,
 	desc = "Copy file:line reference (absolute)",
 })
+
+-- ===== パスコピー（ノーマルモード） =====
+keymap("n", "<leader>yp", ':let @+ = expand("%:.")<CR>:echo "Copied: " . expand("%:.")<CR>', {
+	desc = "Copy relative path",
+})
+
+keymap("n", "<leader>yP", ':let @+ = expand("%:p")<CR>:echo "Copied: " . expand("%:p")<CR>', {
+	desc = "Copy absolute path",
+})
