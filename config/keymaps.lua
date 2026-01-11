@@ -38,6 +38,10 @@ keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {
 	desc = "LSP: Go to definition",
 })
 
+keymap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", {
+	desc = "LSP: Code action (import, fix, etc.)",
+})
+
 -- ===== Markdown画像貼り付け =====
 keymap("i", "vv", function()
 	vim.api.nvim_input("<Esc>")

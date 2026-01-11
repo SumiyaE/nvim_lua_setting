@@ -34,6 +34,9 @@ return {
       callback = function()
         local bufnr = vim.api.nvim_get_current_buf()
 
+        -- q: quickfixを閉じる
+        vim.keymap.set("n", "q", "<cmd>cclose<CR>", { buffer = bufnr, desc = "Close quickfix" })
+
         -- Y: 相対パス:行番号をコピー
         vim.keymap.set("n", "Y", function()
           local line = vim.fn.line(".")

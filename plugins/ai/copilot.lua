@@ -6,7 +6,8 @@ return {
 		suggestion = {
 			auto_trigger = true,
 			keymap = {
-				accept = "<Tab>", -- Tab で提案を受け入れる
+				-- Tab は cmp.lua のスーパータブで管理
+				accept = false,
 			},
 		},
 		filetypes = {
