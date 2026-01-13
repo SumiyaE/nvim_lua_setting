@@ -4,8 +4,8 @@ return {
 	dependencies = { "nvimtools/hydra.nvim" },
 	config = function()
 		require("smart-splits").setup({
-			-- Nvimの端で止まる（WezTermのペインに移動しない）
-			at_edge = "stop",
+			-- WezTermとの連携を無効化（Nvim内のペイン移動のみ）
+			multiplexer_integration = false,
 			-- リサイズの量（デフォルトは3、少し大きめに5に設定）
 			default_amount = 5,
 			-- サイドバー系のバッファのみを無視（ターミナルは含めない）
@@ -19,22 +19,32 @@ return {
 			},
 		})
 
-		-- ウィンドウ移動（既存のCtrl+hjklを置き換え）
-		vim.keymap.set("n", "<C-h>", require("smart-splits").move_cursor_left, { desc = "Move to left window" })
-		vim.keymap.set("n", "<C-j>", require("smart-splits").move_cursor_down, { desc = "Move to down window" })
-		vim.keymap.set("n", "<C-k>", require("smart-splits").move_cursor_up, { desc = "Move to up window" })
-		vim.keymap.set("n", "<C-l>", require("smart-splits").move_cursor_right, { desc = "Move to right window" })
+		-- ウィンドウ移動（端に到達したら反対側にラップ）
+		local function wrap_window_move(direction, opposite)
+			return function()
+				local current = vim.fn.winnr()
+				vim.cmd("wincmd " .. direction)
+				if vim.fn.winnr() == current then
+					-- 端にいるので、反対方向の端まで移動
+					vim.cmd("999wincmd " .. opposite)
+				end
+			end
+		end
 
-		-- ターミナルモードからのウィンドウ移動
-		-- Claude Codeのターミナルと干渉するため、左右のみに制限
+		vim.keymap.set("n", "<C-h>", wrap_window_move("h", "l"), { desc = "Move to left window (wrap)" })
+		vim.keymap.set("n", "<C-j>", wrap_window_move("j", "k"), { desc = "Move to down window (wrap)" })
+		vim.keymap.set("n", "<C-k>", wrap_window_move("k", "j"), { desc = "Move to up window (wrap)" })
+		vim.keymap.set("n", "<C-l>", wrap_window_move("l", "h"), { desc = "Move to right window (wrap)" })
+
+		-- ターミナルモードからのウィンドウ移動（ラップ機能付き）
 		vim.keymap.set("t", "<C-h>", function()
 			vim.cmd("stopinsert")
-			require("smart-splits").move_cursor_left()
-		end, { desc = "Move to left window from terminal" })
+			wrap_window_move("h", "l")()
+		end, { desc = "Move to left window from terminal (wrap)" })
 		vim.keymap.set("t", "<C-l>", function()
 			vim.cmd("stopinsert")
-			require("smart-splits").move_cursor_right()
-		end, { desc = "Move to right window from terminal" })
+			wrap_window_move("l", "h")()
+		end, { desc = "Move to right window from terminal (wrap)" })
 
 		-- Hydraを使ったリサイズモード
 		local Hydra = require("hydra")
