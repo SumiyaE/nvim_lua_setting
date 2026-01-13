@@ -4,6 +4,8 @@ return {
 	dependencies = { "nvimtools/hydra.nvim" },
 	config = function()
 		require("smart-splits").setup({
+			-- Nvimの端で止まる（WezTermのペインに移動しない）
+			at_edge = "stop",
 			-- リサイズの量（デフォルトは3、少し大きめに5に設定）
 			default_amount = 5,
 			-- サイドバー系のバッファのみを無視（ターミナルは含めない）
