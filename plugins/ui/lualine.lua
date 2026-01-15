@@ -55,10 +55,12 @@ return {
 			-- リポジトリ名を取得（改行や空白を除去）
 			local repo_name = result:gsub("%s+", ""):match("([^/]+)$") or "default"
 
-			-- 文字列からハッシュ値を生成
+			-- リポジトリ名 + 日付からハッシュ値を生成（毎日色が変わる）
+			local date_str = os.date("%Y-%m-%d")
+			local hash_input = repo_name .. date_str
 			local hash = 0
-			for i = 1, #repo_name do
-				hash = (hash * 31 + repo_name:byte(i)) % 16777216
+			for i = 1, #hash_input do
+				hash = (hash * 31 + hash_input:byte(i)) % 16777216
 			end
 
 			-- HSLで彩度と明度を固定し、色相だけ変える
