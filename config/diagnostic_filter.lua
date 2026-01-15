@@ -1,9 +1,14 @@
--- Marksman の "Ambiguous link" 診断エラーのみを完全にフィルタリング
+-- Marksman の不要な診断エラーをフィルタリング
 local original_set = vim.diagnostic.set
 vim.diagnostic.set = function(namespace, bufnr, diagnostics, opts)
-  -- "Ambiguous link" を含む診断を除外
   local filtered = vim.tbl_filter(function(d)
-    return not (d.source == "Marksman" and d.message:match("Ambiguous link"))
+    if d.source == "Marksman" then
+      -- "Ambiguous link" と "Link to non-existent document" を除外
+      if d.message:match("Ambiguous link") or d.message:match("Link to non%-existent document") then
+        return false
+      end
+    end
+    return true
   end, diagnostics)
 
   original_set(namespace, bufnr, filtered, opts)

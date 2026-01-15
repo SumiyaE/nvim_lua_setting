@@ -2,6 +2,101 @@ return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
+		-- 現在のリポジトリ情報（BufEnterで更新）
+		local current_repo = {
+			color = nil,
+			color_light = nil,
+			name = nil,
+		}
+
+		-- HSL to RGB変換
+		local function hsl_to_rgb(h, s, l)
+			local r, g, b
+			if s == 0 then
+				r, g, b = l, l, l
+			else
+				local function hue2rgb(p, q, t)
+					if t < 0 then t = t + 1 end
+					if t > 1 then t = t - 1 end
+					if t < 1/6 then return p + (q - p) * 6 * t end
+					if t < 1/2 then return q end
+					if t < 2/3 then return p + (q - p) * (2/3 - t) * 6 end
+					return p
+				end
+				local q = l < 0.5 and l * (1 + s) or l + s - l * s
+				local p = 2 * l - q
+				r = hue2rgb(p, q, h / 360 + 1/3)
+				g = hue2rgb(p, q, h / 360)
+				b = hue2rgb(p, q, h / 360 - 1/3)
+			end
+			return string.format("#%02x%02x%02x", r * 255, g * 255, b * 255)
+		end
+
+		-- リポジトリ情報を更新する関数
+		local function update_repo_info()
+			local buf_path = vim.fn.expand("%:p:h")
+			if buf_path == "" then
+				buf_path = vim.fn.getcwd()
+			end
+
+			local handle = io.popen("cd " .. vim.fn.shellescape(buf_path) .. " && git rev-parse --show-toplevel 2>/dev/null")
+			if not handle then
+				current_repo = { color = nil, color_light = nil, name = nil }
+				return
+			end
+			local result = handle:read("*a")
+			handle:close()
+
+			if result == "" then
+				current_repo = { color = nil, color_light = nil, name = nil }
+				return
+			end
+
+			-- リポジトリ名を取得（改行や空白を除去）
+			local repo_name = result:gsub("%s+", ""):match("([^/]+)$") or "default"
+
+			-- 文字列からハッシュ値を生成
+			local hash = 0
+			for i = 1, #repo_name do
+				hash = (hash * 31 + repo_name:byte(i)) % 16777216
+			end
+
+			-- HSLで彩度と明度を固定し、色相だけ変える
+			local hue = (hash % 360)
+			local saturation = 0.7
+			local lightness = 0.5
+
+			current_repo = {
+				color = hsl_to_rgb(hue, saturation, lightness),
+				color_light = hsl_to_rgb(hue, saturation * 0.6, lightness * 1.3),
+				name = repo_name,
+			}
+		end
+
+		-- BufEnterでリポジトリ情報を更新（確実に同期）
+		vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "WinEnter", "FocusGained" }, {
+			callback = function()
+				vim.schedule(function()
+					update_repo_info()
+					if package.loaded["lualine"] then
+						require("lualine").refresh()
+					end
+				end)
+			end,
+		})
+
+		-- 初回更新
+		update_repo_info()
+
+		-- 色取得関数（シンプルに現在のリポジトリ情報を返す）
+		local function get_repo_color()
+			return current_repo.color, current_repo.name
+		end
+
+		local function get_repo_color_light()
+			return current_repo.color_light
+		end
+
 		-- オレンジをメインにしたカスタムテーマ
 		local colors = {
 			bg = "#282828",
@@ -56,20 +151,55 @@ return {
 			sections = {
 				lualine_a = {
 					{
+						-- リポジトリ名（色付き）
+						function()
+							local _, repo_name = get_repo_color()
+							return "󰉋 " .. (repo_name or "")
+						end,
+						color = function()
+							local repo_color = get_repo_color()
+							if repo_color then
+								return { bg = repo_color, fg = "#1d2021", gui = "bold" }
+							end
+							return { bg = colors.orange, fg = colors.bg, gui = "bold" }
+						end,
+						cond = function()
+							return get_repo_color() ~= nil
+						end,
+						separator = { right = "" },
+						padding = { left = 1, right = 1 },
+					},
+					{
 						"mode",
 						fmt = function(str)
-							return str:sub(1, 1) -- 最初の1文字のみ表示（N, I, V等）
+							return str:sub(1, 1)
+						end,
+						color = function()
+							local repo_color = get_repo_color()
+							if repo_color then
+								return { bg = repo_color, fg = "#1d2021", gui = "bold" }
+							end
+							return { bg = colors.orange, fg = colors.bg, gui = "bold" }
 						end,
 					},
 				},
 				lualine_b = {
 					{
 						"branch",
-						icon = "",
+						icon = "⎇",
+						color = function()
+							local light = get_repo_color_light()
+							if light then
+								return { bg = light, fg = "#1d2021" }
+							end
+							return { bg = colors.dark_orange, fg = colors.fg }
+						end,
 					},
 					{
 						"diff",
 						symbols = { added = " ", modified = " ", removed = " " },
+						-- 薄いグレー背景で固定（色付き記号は維持）
+						color = { bg = "#3c3836", fg = "#ebdbb2" },
 					},
 				},
 				lualine_c = {
@@ -81,11 +211,13 @@ return {
 							readonly = " ",
 							unnamed = "[No Name]",
 						},
+						color = { bg = "#282828", fg = "#ebdbb2" },
 					},
 					{
 						"diagnostics",
 						sources = { "nvim_lsp" },
 						symbols = { error = " ", warn = " ", info = " ", hint = " " },
+						color = { bg = "#282828" },
 					},
 				},
 				lualine_x = {
@@ -102,12 +234,25 @@ return {
 							end
 							return " " .. table.concat(names, ", ")
 						end,
-						color = { fg = "#fe8019" }, -- オレンジ色
+						color = function()
+							local repo_color = get_repo_color()
+							if repo_color then
+								return { fg = repo_color }
+							end
+							return { fg = "#fe8019" }
+						end,
 					},
 					{
 						"filetype",
-						colored = true,
+						colored = false,
 						icon_only = false,
+						color = function()
+							local light = get_repo_color_light()
+							if light then
+								return { fg = light }
+							end
+							return { fg = "#fe8019" }
+						end,
 					},
 					{
 						-- インデント情報
@@ -126,6 +271,13 @@ return {
 						function()
 							return " " .. os.date("%H:%M")
 						end,
+						color = function()
+							local light = get_repo_color_light()
+							if light then
+								return { bg = light, fg = "#1d2021" }
+							end
+							return { bg = colors.dark_orange, fg = colors.fg }
+						end,
 					},
 					{
 						"progress",
@@ -134,6 +286,13 @@ return {
 							local total = vim.fn.line("$")
 							return string.format("%d/%d", cur, total)
 						end,
+						color = function()
+							local light = get_repo_color_light()
+							if light then
+								return { bg = light, fg = "#1d2021" }
+							end
+							return { bg = colors.dark_orange, fg = colors.fg }
+						end,
 					},
 				},
 				lualine_z = {
@@ -141,6 +300,13 @@ return {
 						"location",
 						fmt = function(str)
 							return " " .. str
+						end,
+						color = function()
+							local repo_color = get_repo_color()
+							if repo_color then
+								return { bg = repo_color, fg = "#1d2021", gui = "bold" }
+							end
+							return { bg = colors.orange, fg = colors.bg, gui = "bold" }
 						end,
 					},
 				},

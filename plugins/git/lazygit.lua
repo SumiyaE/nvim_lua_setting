@@ -8,6 +8,6 @@ return {
 		vim.g.lazygit_floating_window_use_plenary = 0 -- plenaryを使わない（高速化）
 	end,
 	keys = {
-		{ "<leader>g", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+		{ "<leader>g", "<cmd>LazyGitCurrentFile<cr>", desc = "LazyGit (current file's repo)" },
 	},
 }
