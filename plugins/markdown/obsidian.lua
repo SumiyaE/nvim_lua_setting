@@ -49,7 +49,15 @@ return {
 		vim.keymap.set("n", "<leader>ot", function() open_daily_note(0) end, { desc = "Open today's daily note" })
 		vim.keymap.set("n", "<leader>oy", function() open_daily_note(-1) end, { desc = "Open yesterday's daily note" })
 		vim.keymap.set("n", "<leader>om", function() open_daily_note(1) end, { desc = "Open tomorrow's daily note" })
-		vim.keymap.set("n", "<leader>tc", "<cmd>ObsidianToggleCheckbox<CR>", { desc = "Toggle checkbox" })
+		-- ドットリピータブルなチェックボックストグル
+		_G.obsidian_toggle_checkbox = function()
+			vim.cmd("ObsidianToggleCheckbox")
+		end
+
+		vim.keymap.set("n", "<leader>tc", function()
+			vim.go.operatorfunc = "v:lua.obsidian_toggle_checkbox"
+			return "g@l"
+		end, { expr = true, desc = "Toggle checkbox (dot-repeatable)" })
 	end,
 	opts = {
 		workspaces = {
