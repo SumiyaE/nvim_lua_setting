@@ -49,6 +49,7 @@ return {
 		vim.keymap.set("n", "<leader>ot", function() open_daily_note(0) end, { desc = "Open today's daily note" })
 		vim.keymap.set("n", "<leader>oy", function() open_daily_note(-1) end, { desc = "Open yesterday's daily note" })
 		vim.keymap.set("n", "<leader>om", function() open_daily_note(1) end, { desc = "Open tomorrow's daily note" })
+		vim.keymap.set("n", "<leader>tc", "<cmd>ObsidianToggleCheckbox<CR>", { desc = "Toggle checkbox" })
 	end,
 	opts = {
 		workspaces = {
@@ -59,6 +60,10 @@ return {
 		},
 		ui = {
 			enable = true, -- UI機能を有効化
+			checkboxes = {
+				[" "] = { char = "☐", hl_group = "ObsidianTodo" },
+				["x"] = { char = "☑", hl_group = "ObsidianDone" },
+			},
 		},
 		daily_notes = {
 			-- Optional, if you keep daily notes in a separate directory.
