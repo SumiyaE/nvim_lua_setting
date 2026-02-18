@@ -23,6 +23,16 @@ autocmd({ "WinLeave", "BufLeave" }, {
 	desc = "Disable cursorline in inactive window",
 })
 
+-- ===== ファイルタイプ検出 =====
+-- .template / .conf ファイルをnginxとしてハイライト
+autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = { "*.template", "*.conf" },
+	callback = function()
+		vim.bo.filetype = "nginx"
+	end,
+	desc = "Detect .template/.conf files as nginx config",
+})
+
 -- ===== View保存（折りたたみ・カーソル位置） =====
 -- 保存時に view を保存
 autocmd("BufWritePost", {
