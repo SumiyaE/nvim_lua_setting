@@ -22,6 +22,10 @@ opt.cursorline = true -- カーソル行をハイライト
 opt.termguicolors = true -- True colorサポート
 opt.conceallevel = 1 -- Obsidian.nvimのUI機能用
 
+-- ===== ファイル保護設定 =====
+opt.swapfile = false -- スワップファイルを無効化（git + undofileで十分）
+opt.undofile = true -- undo履歴をファイルに保存（Neovim再起動後もundo可能）
+
 -- ===== 編集設定 =====
 opt.clipboard:append({ "unnamedplus" }) -- システムクリップボードを使用
 
