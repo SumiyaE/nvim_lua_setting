@@ -23,6 +23,7 @@ return {
 		startify.section.top_buttons.val = {
 			startify.button("f", "󰈞  Find file", ":Telescope find_files <CR>"),
 			startify.button("g", "  Find text", ":Telescope live_grep <CR>"),
+			startify.button("s", "  Restore session", [[<cmd>lua require("persistence").load()<cr>]]),
 			startify.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
 		}
 
