@@ -1,6 +1,11 @@
 return {
 	"nvim-neo-tree/neo-tree.nvim",
 	branch = "v3.x",
+	cmd = "Neotree",
+	keys = {
+		{ "<leader>e", "<cmd>Neotree toggle<CR>", desc = "Toggle Neo-tree" },
+		{ "<leader>b", "<cmd>Neotree reveal<CR>", desc = "Find current file in Neo-tree" },
+	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons",
@@ -59,8 +64,5 @@ return {
 			},
 		})
 
-		-- キーマップ（nvim-treeと同じ）
-		vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
-		vim.keymap.set("n", "<leader>b", "<cmd>Neotree reveal<CR>", { desc = "Find current file in Neo-tree" })
 	end,
 }
