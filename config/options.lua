@@ -9,6 +9,10 @@ local g = vim.g
 -- ===== Leader設定 =====
 g.mapleader = " "
 
+-- ===== netrw無効化（neo-treeで置き換え） =====
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
+
 -- ===== タイミング設定 =====
 opt.timeoutlen = 300 -- leaderキーの反応速度
 

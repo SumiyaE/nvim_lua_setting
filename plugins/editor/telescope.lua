@@ -9,7 +9,7 @@ return {
 		{ "<leader>fb", function() require("telescope.builtin").buffers() end, desc = "Telescope: Find buffers" },
 		{ "<leader>fh", function() require("telescope.builtin").help_tags() end, desc = "Telescope: Help tags" },
 		{ "<leader>fr", function() require("telescope.builtin").resume() end, desc = "Telescope: Resume last search" },
-		{ "<leader>fo", function() require("telescope.builtin").oldfiles() end, desc = "Telescope: Recent files" },
+		{ "<leader>fo", function() require("telescope.builtin").oldfiles({ only_cwd = true, include_current_session = true }) end, desc = "Telescope: Recent files (cwd)" },
 	},
 	opts = {
 		pickers = {
