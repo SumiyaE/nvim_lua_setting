@@ -32,58 +32,57 @@ return {
 			return string.format("#%02x%02x%02x", r * 255, g * 255, b * 255)
 		end
 
-		-- リポジトリ情報を更新する関数
+		-- リポジトリ情報を非同期で更新する関数
 		local function update_repo_info()
 			local buf_path = vim.fn.expand("%:p:h")
 			if buf_path == "" then
 				buf_path = vim.fn.getcwd()
 			end
 
-			local handle = io.popen("cd " .. vim.fn.shellescape(buf_path) .. " && git rev-parse --show-toplevel 2>/dev/null")
-			if not handle then
-				current_repo = { color = nil, color_light = nil, name = nil }
-				return
-			end
-			local result = handle:read("*a")
-			handle:close()
+			vim.system(
+				{ "git", "rev-parse", "--show-toplevel" },
+				{ cwd = buf_path, text = true },
+				function(obj)
+					vim.schedule(function()
+						if obj.code ~= 0 or not obj.stdout or obj.stdout == "" then
+							current_repo = { color = nil, color_light = nil, name = nil }
+							return
+						end
 
-			if result == "" then
-				current_repo = { color = nil, color_light = nil, name = nil }
-				return
-			end
+						-- リポジトリ名を取得（改行や空白を除去）
+						local repo_name = obj.stdout:gsub("%s+", ""):match("([^/]+)$") or "default"
 
-			-- リポジトリ名を取得（改行や空白を除去）
-			local repo_name = result:gsub("%s+", ""):match("([^/]+)$") or "default"
+						-- リポジトリ名 + 日付からハッシュ値を生成（毎日色が変わる）
+						local date_str = os.date("%Y-%m-%d")
+						local hash_input = repo_name .. date_str
+						local hash = 0
+						for i = 1, #hash_input do
+							hash = (hash * 31 + hash_input:byte(i)) % 16777216
+						end
 
-			-- リポジトリ名 + 日付からハッシュ値を生成（毎日色が変わる）
-			local date_str = os.date("%Y-%m-%d")
-			local hash_input = repo_name .. date_str
-			local hash = 0
-			for i = 1, #hash_input do
-				hash = (hash * 31 + hash_input:byte(i)) % 16777216
-			end
+						-- HSLで彩度と明度を固定し、色相だけ変える
+						local hue = (hash % 360)
+						local saturation = 0.7
+						local lightness = 0.5
 
-			-- HSLで彩度と明度を固定し、色相だけ変える
-			local hue = (hash % 360)
-			local saturation = 0.7
-			local lightness = 0.5
+						current_repo = {
+							color = hsl_to_rgb(hue, saturation, lightness),
+							color_light = hsl_to_rgb(hue, saturation * 0.6, lightness * 1.3),
+							name = repo_name,
+						}
 
-			current_repo = {
-				color = hsl_to_rgb(hue, saturation, lightness),
-				color_light = hsl_to_rgb(hue, saturation * 0.6, lightness * 1.3),
-				name = repo_name,
-			}
+						if package.loaded["lualine"] then
+							require("lualine").refresh()
+						end
+					end)
+				end
+			)
 		end
 
-		-- BufEnterでリポジトリ情報を更新（確実に同期）
+		-- BufEnterでリポジトリ情報を更新（非同期）
 		vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "WinEnter", "FocusGained" }, {
 			callback = function()
-				vim.schedule(function()
-					update_repo_info()
-					if package.loaded["lualine"] then
-						require("lualine").refresh()
-					end
-				end)
+				update_repo_info()
 			end,
 		})
 
