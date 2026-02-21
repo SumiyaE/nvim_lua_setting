@@ -1,0 +1,29 @@
+return {
+	"folke/persistence.nvim",
+	event = "BufReadPre",
+	opts = {},
+	keys = {
+		{
+			"<leader>qs",
+			function()
+				require("persistence").load()
+			end,
+			desc = "Restore session (current dir)",
+		},
+		{
+			"<leader>ql",
+			function()
+				require("persistence").load({ last = true })
+			end,
+			desc = "Restore last session",
+		},
+		{
+			"<leader>qd",
+			function()
+				require("persistence").stop()
+				vim.notify("Session recording stopped", vim.log.levels.INFO)
+			end,
+			desc = "Stop session recording",
+		},
+	},
+}

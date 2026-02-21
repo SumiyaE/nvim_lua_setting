@@ -31,6 +31,9 @@ opt.shiftwidth = 2
 opt.softtabstop = 2
 opt.expandtab = true
 
+-- ===== セッション設定 =====
+opt.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 -- ===== View設定 =====
 opt.viewoptions:remove("options") -- viewにオプションを保存しない
 
