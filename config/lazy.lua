@@ -7,6 +7,9 @@
 --   - config/keymaps.lua: グローバルキーマッピング
 --   - config/autocmds.lua: Autocmd定義
 
+-- Luaモジュールのバイトコードキャッシュを有効化（起動高速化）
+vim.loader.enable()
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -40,5 +43,21 @@ require("lazy").setup({
 		{ import = "plugins.markdown" },
 		{ import = "plugins.ai" },
 		{ import = "plugins.misc" },
+	},
+	performance = {
+		rtp = {
+			disabled_plugins = {
+				"gzip",
+				"matchit",
+				"matchparen",
+				"netrwPlugin",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
+				"rplugin",
+				"man",
+			},
+		},
 	},
 })
