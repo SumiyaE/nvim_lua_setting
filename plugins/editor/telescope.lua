@@ -10,8 +10,12 @@ return {
 		{ "<leader>fh", function() require("telescope.builtin").help_tags() end, desc = "Telescope: Help tags" },
 		{ "<leader>fr", function() require("telescope.builtin").resume() end, desc = "Telescope: Resume last search" },
 		{ "<leader>fo", function() require("telescope.builtin").oldfiles({ only_cwd = true, include_current_session = true }) end, desc = "Telescope: Recent files (cwd)" },
+		{ "<leader>fO", function() require("telescope.builtin").oldfiles({ include_current_session = true }) end, desc = "Telescope: Recent files (global)" },
 	},
 	opts = {
+		defaults = {
+			file_ignore_patterns = { "%.git/" },
+		},
 		pickers = {
 			find_files = {
 				hidden = true,

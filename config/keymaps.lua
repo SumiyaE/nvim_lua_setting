@@ -13,13 +13,19 @@ keymap("i", "jj", "<Esc>", {
 })
 
 -- ===== バッファ操作 =====
-keymap("n", "<Tab>", ":bnext<CR>", {
+keymap("n", "<Tab>", function()
+	if vim.bo.buftype ~= "" then return end
+	vim.cmd("bnext")
+end, {
 	noremap = true,
 	silent = true,
 	desc = "Next buffer",
 })
 
-keymap("n", "<S-Tab>", ":bprevious<CR>", {
+keymap("n", "<S-Tab>", function()
+	if vim.bo.buftype ~= "" then return end
+	vim.cmd("bprevious")
+end, {
 	noremap = true,
 	silent = true,
 	desc = "Previous buffer",

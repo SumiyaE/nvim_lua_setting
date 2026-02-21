@@ -53,7 +53,7 @@ return {
 			{
 				type = "group",
 				val = function()
-					return { startify.mru(0, false, 3) }
+					return { startify.mru(10, false, 3) }
 				end,
 				opts = { shrink_margin = false },
 			},
