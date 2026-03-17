@@ -1,8 +1,10 @@
 return {
 	"mason-org/mason.nvim",
+	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		"mason-org/mason-lspconfig.nvim",
+		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
 		-- mason自体のセットアップ
@@ -23,6 +25,10 @@ return {
 				Lua = {
 					diagnostics = {
 						globals = { "vim" },
+					},
+					workspace = {
+						library = vim.api.nvim_get_runtime_file("", true),
+						checkThirdParty = false,
 					},
 				},
 			},
