@@ -6,7 +6,7 @@ return {
 			options = {
 				transparent = false,
 				terminal_colors = true,
-				dim_inactive = false,
+				dim_inactive = true,
 				styles = {
 					comments = "italic",
 					keywords = "bold",
@@ -16,8 +16,5 @@ return {
 		})
 
 		vim.cmd.colorscheme("nightfox")
-
-		-- QuickFixLineを目立たせる（lualineと同じオレンジ）
-		vim.api.nvim_set_hl(0, "QuickFixLine", { bg = "#fe8019", fg = "#282828", bold = true })
 	end,
 }

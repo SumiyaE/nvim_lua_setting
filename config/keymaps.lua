@@ -13,39 +13,31 @@ keymap("i", "jj", "<Esc>", {
 })
 
 -- ===== バッファ操作 =====
-keymap("n", "<Tab>", function()
-	if vim.bo.buftype ~= "" then return end
-	vim.cmd("bnext")
-end, {
+keymap("n", "<Tab>", ":bnext<CR>", {
 	noremap = true,
 	silent = true,
 	desc = "Next buffer",
 })
 
-keymap("n", "<S-Tab>", function()
-	if vim.bo.buftype ~= "" then return end
-	vim.cmd("bprevious")
-end, {
+keymap("n", "<S-Tab>", ":bprevious<CR>", {
 	noremap = true,
 	silent = true,
 	desc = "Previous buffer",
 })
 
-keymap("n", "<C-x>", function()
-	require("mini.bufremove").delete()
-end, {
+keymap("n", "<C-x>", ":bd<CR>", {
 	noremap = true,
 	silent = true,
 	desc = "Close buffer",
 })
 
 -- ===== LSP =====
-keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {
-	desc = "LSP: Go to definition",
+keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", {
+	desc = "LSP: Go to references",
 })
 
-keymap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", {
-	desc = "LSP: Code action (import, fix, etc.)",
+keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {
+	desc = "LSP: Go to definition",
 })
 
 -- ===== Markdown画像貼り付け =====
@@ -59,55 +51,7 @@ end, {
 	desc = "Insert image from clipboard (Markdown)",
 })
 
--- ===== ファイル参照コピー =====
--- 共通関数: パスと行番号をコピー
-local function copy_file_reference(use_absolute_path)
-	local start_line = vim.fn.line("v")
-	local end_line = vim.fn.line(".")
-
-	if start_line > end_line then
-		start_line, end_line = end_line, start_line
-	end
-
-	local path = use_absolute_path and vim.fn.expand("%:p") or vim.fn.expand("%:.")
-	local result
-	if start_line == end_line then
-		result = path .. ":" .. start_line
-	else
-		result = path .. ":" .. start_line .. "-" .. end_line
-	end
-
-	vim.fn.setreg("+", result)
-	vim.notify("Copied: " .. result, vim.log.levels.INFO)
-
-	-- ビジュアルモード終了
-	local esc = vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
-	vim.api.nvim_feedkeys(esc, "n", false)
-end
-
--- 相対パス
-keymap("v", "<leader>yr", function()
-	copy_file_reference(false)
-end, {
-	noremap = true,
-	silent = true,
-	desc = "Copy file:line reference (relative)",
-})
-
--- 絶対パス
-keymap("v", "<leader>yR", function()
-	copy_file_reference(true)
-end, {
-	noremap = true,
-	silent = true,
-	desc = "Copy file:line reference (absolute)",
-})
-
--- ===== パスコピー（ノーマルモード） =====
-keymap("n", "<leader>yp", ':let @+ = expand("%:.")<CR>:echo "Copied: " . expand("%:.")<CR>', {
-	desc = "Copy relative path",
-})
-
-keymap("n", "<leader>yP", ':let @+ = expand("%:p")<CR>:echo "Copied: " . expand("%:p")<CR>', {
-	desc = "Copy absolute path",
+-- ===== Claude Code通知 =====
+keymap("n", "<leader>an", "<cmd>ClaudeNotify<cr>", {
+	desc = "Send Claude Code notification",
 })
