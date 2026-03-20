@@ -26,6 +26,5 @@ return {
   config = function(_, opts)
     local map = require("mini.map")
     map.setup(opts)
-    map.open() -- 起動時に自動で開く
   end,
 }
