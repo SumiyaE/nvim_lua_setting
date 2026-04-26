@@ -1,6 +1,7 @@
 return {
 	"mason-org/mason.nvim",
 	event = { "BufReadPre", "BufNewFile" },
+	cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		"mason-org/mason-lspconfig.nvim",
@@ -36,7 +37,7 @@ return {
 
 		-- mason-lspconfigのセットアップ
 		require("mason-lspconfig").setup({
-			ensure_installed = { "lua_ls", "terraformls", "marksman", "clangd" },
+			ensure_installed = { "lua_ls", "terraformls", "marksman", "clangd", "ts_ls" },
 		})
 	end,
 }
