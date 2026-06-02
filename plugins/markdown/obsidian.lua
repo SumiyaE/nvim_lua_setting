@@ -15,7 +15,7 @@ return {
 		-- 週ディレクトリ対応の日記オープン関数
 		local function open_daily_note(days_offset)
 			days_offset = days_offset or 0
-			local notes_dir = vim.fn.expand("~/notes/📅 日記")
+			local notes_dir = vim.fn.expand("~/notes/日記")
 
 			-- 対象日付を計算
 			local target_date = os.time() + (days_offset * 24 * 60 * 60)
@@ -33,9 +33,15 @@ return {
 			local monday_str = os.date("%Y年%m月%d日", monday)
 			local sunday_str = os.date("%m月%d日", sunday)
 
+			-- 四半期ディレクトリ名を生成（週の月曜日が属する四半期）
+			local monday_year = os.date("%Y", monday)
+			local monday_month = tonumber(os.date("%m", monday))
+			local quarter = math.ceil(monday_month / 3)
+			local quarter_dir = monday_year .. "Q" .. quarter
+
 			-- 週ディレクトリ名を生成
 			local week_dir = monday_str .. "~" .. sunday_str
-			local week_path = notes_dir .. "/" .. week_dir
+			local week_path = notes_dir .. "/" .. quarter_dir .. "/" .. week_dir
 
 			-- ディレクトリが存在しなければ作成
 			vim.fn.mkdir(week_path, "p")
@@ -75,7 +81,7 @@ return {
 		},
 		daily_notes = {
 			-- Optional, if you keep daily notes in a separate directory.
-			folder = "📅 日記",
+			folder = "日記",
 			date_format = "%Y年%m月%d日",
 			-- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
 			template = nil,
